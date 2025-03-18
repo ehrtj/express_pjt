@@ -173,3 +173,23 @@ app.get('/ping', (req, res) => {
   app.get('/articles', (req, res) => {
     res.json(articles);
   });
+
+  app.get('/test',(req,res)=>{
+    //console.log(req.query);
+    console.log(req.query.id);
+    res.send("ok")
+  })
+
+  app.get('/user/:id',(req, res)=>{
+
+    console.log(req.params.id);
+    let id = req.params
+
+    let user_ien = users.length
+    for(let i = 0; 1< users_ien ; i++){
+        if(users[i].id==id){
+            res.send(users[1])
+        }
+    }
+    res.send("오키")
+  })
