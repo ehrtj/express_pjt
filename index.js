@@ -235,7 +235,7 @@ app.get('/ping', (req, res) => {
     
     articles.push(data);
     return res.json("ok")
-  })*/
+  })
 
   app.delete('/articles/:id', (req, res) => {
       let articleId = parseInt(req.params.id); // 요청된 ID를 숫자로 변환
@@ -249,9 +249,33 @@ app.get('/ping', (req, res) => {
   
       
       res.status(200).json({ message: "게시글이 성공적으로 삭제되었습니다." }); // 삭제 완료 메시지 반환
-  });
+  })*/
   
-  
+  app.delete('/articles/:id',(req,res)=>{
+
+    let id = req.params.id
+
+    console.log(id);
+
+    articles.splice(id-1, 1);
+
+    res.send("ok")
+
+  })
+
+  app.put('/articles/:id', (req,res)=>{
+    let id = req.params.id -1
+    let data = req.body
+    console.log(data)
+
+    articles[id] = data
+
+    console.log(id)
+
+    res.send("ok")
+  })
+
+  //https://kihyeonkwon.notion.site/1b9c3ce583dd808f9a18ec08c1437bcd
 
     
   
