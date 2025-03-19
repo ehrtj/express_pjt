@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
+const cors = require('cors');
+app.use(cors());
+
+//json으로 된 post의 body를 읽기위해 필요
+app.use(express.json())
+
 
 
 const users =  [
@@ -170,15 +176,12 @@ app.get('/ping', (req, res) => {
     res.send(users);
   });
 
-  app.get('/articles', (req, res) => {
-    res.json(articles);
-  });
 
-  app.get('/test',(req,res)=>{
+  app.get('/post',(req,res)=>{
     //console.log(req.query);
-    console.log(req.query.id);
-    res.send("ok")
+    console.log(req);
   })
+
 
   app.get('/user/:id',(req, res)=>{
 
@@ -188,8 +191,69 @@ app.get('/ping', (req, res) => {
     let user_ien = users.length
     for(let i = 0; 1< users_ien ; i++){
         if(users[i].id==id){
-            res.send(users[1])
+            return res.send(users[i])
         }
     }
-    res.send("오키")
+    res.json("없었습니다")
   })
+
+  app.get('/articles/:id',(req,res)=>{
+
+    let articles_id = req.params.id
+
+    let article = articles[articles_id - 1]
+
+    res.json(article);
+
+  })
+
+  app.get('/articles',(req,res)=>{
+    console.log(req);
+    res.json(articles)
+  })
+
+  /*app.post('/articles' , (req,res)=>{
+    let headers = req.headers
+    console.log(headers);
+    const date = req.body
+    console.log(date);
+
+    articles.push(date);
+    return res.json("ok")
+  })*/
+
+  /*app.post('/articles' , (req,res)=>{
+
+    
+    let data = req.body
+    //id 증가가
+    let lastId = articles[articles.length - 1].id
+    data.id = lastId + 1
+    //데이트 추가
+    const now = new Date().toISOString().split('.')[0] + "Z";
+    data.data = now;
+    
+    articles.push(data);
+    return res.json("ok")
+  })*/
+
+  app.delete('/articles/:id', (req, res) => {
+      let articleId = parseInt(req.params.id); // 요청된 ID를 숫자로 변환
+      let index = articles.findIndex(article => article.id === articleId); // ID로 게시글 찾기
+  
+      if (index === -1) {
+          return res.status(404).json({ message: "게시글을 찾을 수 없습니다." }); // 게시글이 없을 때 오류 반환
+      }
+  
+      articles.splice(index, 1); // 해당 인덱스에서 1개 요소 삭제
+  
+      
+      res.status(200).json({ message: "게시글이 성공적으로 삭제되었습니다." }); // 삭제 완료 메시지 반환
+  });
+  
+  
+
+    
+  
+
+  

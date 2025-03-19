@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 50%;
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .article {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .article h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .article p {
+            margin: 5px 0;
+        }
+
+        .article small {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>게시판</h1>
+
+        <!-- 게시글 작성 폼 -->
+        <form id="postForm">
+            <input type="text" id="title" placeholder="제목" required>
+            <textarea id="content" placeholder="내용" rows="4" required></textarea>
+            <button type="submit">게시</button>
+        </form>
+
+        <!-- 게시글 리스트 -->
+        <div id="articles"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadArticles();
+
+            document.getElementById("postForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const title = document.getElementById("title").value;
+                const content = document.getElementById("content").value;
+
+                if (!title || !content) {
+                    alert("제목과 내용을 입력해주세요!");
+                    return;
+                }
+
+                const response = await fetch("http://localhost:3000/articles", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        content: content,
+                        author_id: 1
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById("postForm").reset();
+                    loadArticles();
+                } else {
+                    alert("게시글을 작성하는데 실패했습니다.");
+                }
+            });
+        });
+
+        async function loadArticles() {
+            const response = await fetch("http://localhost:3000/articles");
+            const articles = await response.json();
+            const articlesContainer = document.getElementById("articles");
+            articlesContainer.innerHTML = "";
+
+            articles.reverse().forEach(article => {
+                const articleElement = document.createElement("div");
+                articleElement.classList.add("article");
+                articleElement.innerHTML = `
+                    <h2>${article.title}</h2>
+                    <p>${article.content}</p>
+                    <small>작성 날짜: ${new Date(article.date).toLocaleString()}</small>
+                `;
+                articlesContainer.appendChild(articleElement);
+            });
+        }
+    </script>
+
+</body>
+</html>
