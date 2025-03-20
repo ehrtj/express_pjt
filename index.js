@@ -220,9 +220,9 @@ app.get('/ping', (req, res) => {
 
     articles.push(date);
     return res.json("ok")
-  })*/
+  })
 
-  /*app.post('/articles' , (req,res)=>{
+  app.post('/articles' , (req,res)=>{
 
     
     let data = req.body
@@ -275,7 +275,68 @@ app.get('/ping', (req, res) => {
     res.send("ok")
   })
 
-  //https://kihyeonkwon.notion.site/1b9c3ce583dd808f9a18ec08c1437bcd
+  /*https://kihyeonkwon.notion.site/1b9c3ce583dd808f9a18ec08c1437bcd
+  CREATE TABLE user (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    profile_url TEXT,
+    nickname TEXT NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+  CREATE TABLE article (                 새로운 Artocle 테이블 반들어줘
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
+
+
+
+
+    INSERT INTO user (email, password, profile_url, nickname) VALUES
+('alice@example.com', 'hashed_password1', 'https://example.com/profiles/alice.jpg', '홍길돌'),
+('bob@example.com', 'hashed_password2', 'https://example.com/profiles/bob.jpg', 'Bobby99'),
+('charlie@example.com', 'hashed_password3', 'https://example.com/profiles/charlie.jpg', 'CharlieC'),
+('david@example.com', 'hashed_password4', 'https://example.com/profiles/david.jpg', 'DaveD'),
+('eve@example.com', 'hashed_password5', 'https://example.com/profiles/eve.jpg', 'EveEve');
+
+DELETE FROM user
+WHERE id = 3;
+
+
+SELECT * FROM user;
+
+
+
+INSERT INTO article (user_id, title, content) VALUES        유저들이 각각 2개씩 게시물을 작성하는 sql문을 만들어줘
+(1, '첫 번째 글 - Alice', '이것은 Alice의 첫 번째 게시물입니다.'),
+(1, '두 번째 글 - Alice', '이것은 Alice의 두 번째 게시물입니다.'),
+(2, '첫 번째 글 - Bob', '이것은 Bob의 첫 번째 게시물입니다.'),
+(2, '두 번째 글 - Bob', '이것은 Bob의 두 번째 게시물입니다.'),
+(3, '첫 번째 글 - Charlie', '이것은 Charlie의 첫 번째 게시물입니다.'),
+(3, '두 번째 글 - Charlie', '이것은 Charlie의 두 번째 게시물입니다.'),
+(4, '첫 번째 글 - David', '이것은 David의 첫 번째 게시물입니다.'),
+(4, '두 번째 글 - David', '이것은 David의 두 번째 게시물입니다.'),
+(5, '첫 번째 글 - Eve', '이것은 Eve의 첫 번째 게시물입니다.'),
+(5, '두 번째 글 - Eve', '이것은 Eve의 두 번째 게시물입니다.');
+
+UPDATE article        3번 id를 가진 게시글의 글을 '바뀜'으로 바꿔주는 sql문 작성해줘
+SET content = '바뀜'
+WHERE id = 3;
+
+DELETE FROM user    아이디가 4번인 유져를 지워줘
+WHERE id = 4;
+
+
+
+SELECT * FROM article WHERE id = 3;
+
+*/
 
     
   
